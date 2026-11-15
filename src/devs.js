@@ -7,11 +7,11 @@ const app = document.querySelector("#app");
 
 // First person in the list is the lead and sits at the top of the tree.
 const team = [
-    { name: "Jacken James B. Bongao", role: "Lead Developer", initials: "JB" },
-    { name: "Angelito Nicholas Jr.", role: "Data Analyst", initials: "AN" },
-    { name: "Matt David Abing", role: "", initials: "MA" },
-    { name: "Roxas", role: "UI & UX Designer", initials: "R" },
-    { name: "Oclarit", role: "Presenter", initials: "O" },
+    { name: "Jacken James B. Bongao", role: " Team Leader & Developer", initials: "JB" },
+    { name: "Angelito Nicolas Jr.", role: "Data Analyst & Researcher", initials: "AN" },
+    { name: "Matt David Abing", role: "Tech Support & Researcher", initials: "MA" },
+    { name: "First Eman Roxas", role: "UI & UX Artist & Presenter", initials: "FR" },
+    { name: "Shedrick Ross Oclarit", role: "Creative Ideator & Project Manager", initials: "O" },
 ];
 
 const [lead, ...members] = team;
@@ -41,8 +41,8 @@ app.innerHTML = `
 
       <section class="devs-section" aria-labelledby="devs-team-title">
         <div class="devs-section-heading">
-          <span class="eyebrow">THE TEAM</span>
-          <h2 id="devs-team-title">JS Devs.</h2>
+          
+          <h2 id="devs-team-title">Tala Voyager 3</h2>
         </div>
 
         <ul class="devs-tree" aria-label="JS Devs team">
@@ -57,24 +57,13 @@ app.innerHTML = `
 
       <section class="devs-section" aria-labelledby="devs-build-title">
         <div class="devs-section-heading">
-          <span class="eyebrow">A LITTLE ABOUT THE BUILD</span>
-          <h2 id="devs-build-title">Science, code, and a view from space.</h2>
+          
+    
         </div>
 
       </section>
 
-      <section class="devs-footer-card" aria-label="Project links">
-        <div><h2>Curiosity has no edge.</h2><p>Explore the globe or take a closer look at how the project is put together.</p></div>
-        <div class="devs-footer-links"><a href="/">Explore Earth <span aria-hidden="true">↗</span></a><a href="https://github.com/ethanplusai/earth-moon-solar" target="_blank" rel="noopener noreferrer">Project repository <span aria-hidden="true">↗</span></a></div>
-      </section>
-      <footer class="devs-footer"><span>EARTH EXPLORER</span><span>Made for the curious.</span></footer>
-    </div>
-    <dialog class="ex-dialog">
-      <button class="ex-close" aria-label="Close sources">✕</button>
-      <h2>Sources and credits.</h2>
-      <p>Earth surface, relief, water, and cloud maps use NASA-derived imagery. Night imagery and other visual assets are credited with source links and terms in the project repository.</p>
-      <p><a href="https://github.com/ethanplusai/earth-moon-solar/blob/main/CREDITS.md" target="_blank" rel="noopener noreferrer">View project credits ↗</a></p>
-    </dialog>
+     
   </main>
 `;
 
@@ -82,3 +71,17 @@ document.querySelector("#nav-science").onclick = () =>
     document.querySelector(".ex-dialog").showModal();
 document.querySelector(".ex-dialog .ex-close").onclick = () =>
     document.querySelector(".ex-dialog").close();
+
+const devsPage = document.querySelector(".devs-page");
+let scrollbarTimer;
+devsPage.addEventListener(
+    "scroll",
+    () => {
+        devsPage.classList.add("is-scrolling");
+        clearTimeout(scrollbarTimer);
+        scrollbarTimer = setTimeout(() => {
+            devsPage.classList.remove("is-scrolling");
+        }, 800);
+    },
+    { passive: true },
+);

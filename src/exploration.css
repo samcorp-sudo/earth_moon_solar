@@ -35,14 +35,18 @@
   color: var(--accent);
 }
 .ex-copy h1 {
+  font-family: "Bahnschrift", "Arial Narrow", "Helvetica Neue", sans-serif;
   font-size: clamp(48px, 4.6vw, 67px);
-  font-weight: 400;
-  letter-spacing: -3px;
+  font-weight: 600;
+  letter-spacing: -0.055em;
   line-height: 1.02;
   margin: 24px 0;
 }
 .ex-copy p {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.015em;
   line-height: 1.85;
   color: #b3bdc4;
   max-width: 330px;
@@ -281,7 +285,7 @@
   }
   .ex-copy h1 {
     font-size: 36px;
-    letter-spacing: -1.8px;
+    letter-spacing: -0.045em;
     margin: 10px 0;
   }
   .ex-copy h1 br {

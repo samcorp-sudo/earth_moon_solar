@@ -1,6 +1,4 @@
 /* ---- Team tree: lead on top, branches below ---- */
-/* Paste this at the end of devs.css */
-
 .devs-hero {
     grid-template-columns: 1fr;
     min-height: 0;
@@ -16,9 +14,14 @@
 }
 
 .devs-tree {
-    --line: #a9cdb74d;
+    --line: #a9cdb780;
     --gap: 34px;
+    width: 100%;
     margin-top: 40px;
+}
+
+.devs-tree > .devs-node-lead {
+    width: 100%;
 }
 
 .devs-node {
@@ -58,6 +61,7 @@
 /* Vertical line from the lead down to the horizontal bar */
 .devs-branch {
     position: relative;
+    width: 100%;
     align-items: flex-start;
     gap: 0;
     padding-top: var(--gap);
@@ -119,6 +123,10 @@
         justify-content: flex-start;
     }
 
+    .devs-branch {
+        width: auto;
+    }
+
     .devs-node {
         align-items: stretch;
     }
@@ -164,7 +172,590 @@
                 padding-top: 22px;
             }
 
-                .devs-branch > .devs-node:first-child::before {
-                    top: calc(22px + 40px);
+                            .devs-branch > .devs-node:first-child::before {
+                                top: calc(22px + 40px);
+                            }
                 }
-}
+
+                .devs-page {
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    background:
+                        radial-gradient(ellipse at 50% 34%, #16302b88 0, transparent 40%),
+                        linear-gradient(145deg, #08110f, #030609 58%);
+                }
+
+                .devs-atmosphere {
+                    position: fixed;
+                    inset: 0;
+                    overflow: hidden;
+                    pointer-events: none;
+                }
+
+                .devs-atmosphere span {
+                    position: absolute;
+                    width: 420px;
+                    aspect-ratio: 1;
+                    border: 1px solid #a9cdb710;
+                    border-radius: 50%;
+                    box-shadow: 0 0 0 42px #a9cdb706, 0 0 0 84px #a9cdb704;
+                }
+
+                .devs-atmosphere span:first-child {
+                    top: 16%;
+                    right: -210px;
+                }
+
+                .devs-atmosphere span:last-child {
+                    top: 58%;
+                    left: -270px;
+                    width: 540px;
+                }
+
+                .devs-content {
+                    position: relative;
+                    z-index: 1;
+                    width: min(1120px, calc(100% - 64px));
+                    margin: 0 auto;
+                    padding: 148px 0 34px;
+                }
+
+                .devs-hero {
+                    display: grid;
+                    align-items: end;
+                    padding: 26px 0 52px;
+                }
+
+                .devs-intro {
+                    max-width: 760px;
+                }
+
+                .devs-intro h1 {
+                    margin: 16px 0 18px;
+                    font-size: clamp(42px, 6vw, 76px);
+                    font-weight: 400;
+                    letter-spacing: -0.065em;
+                    line-height: 0.99;
+                }
+
+                .devs-intro h1 em {
+                    color: #b6d2bd;
+                    font-style: normal;
+                }
+
+                .devs-intro p {
+                    max-width: 520px;
+                    margin: 0;
+                    color: #9eafb0;
+                    font-size: 15px;
+                    line-height: 1.8;
+                }
+
+                .devs-section {
+                    margin-top: 30px;
+                }
+
+                .devs-section-heading {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: end;
+                    gap: 20px;
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid #a9cdb721;
+                }
+
+                .devs-section-heading .eyebrow {
+                    display: block;
+                    margin-bottom: 9px;
+                    color: #a9cdb7;
+                }
+
+                .devs-section-heading h2 {
+                    margin: 0;
+                    color: #edf2ed;
+                    font-size: clamp(25px, 3.2vw, 38px);
+                    font-weight: 400;
+                    letter-spacing: -0.045em;
+                }
+
+                .devs-tree {
+                    --line: #9ec7a875;
+                    --gap: 32px;
+                    margin-top: 28px;
+                    padding: 28px 16px 32px;
+                    border: 1px solid #a9cdb71a;
+                    border-radius: 20px;
+                    background: linear-gradient(145deg, #102019bd, #09100fbd 70%);
+                    box-shadow: inset 0 1px #ffffff08, 0 22px 70px #0004;
+                }
+
+                .devs-tree > .devs-node-lead > .devs-member {
+                    margin: 0 auto;
+                }
+
+                .devs-member {
+                    position: relative;
+                    box-sizing: border-box;
+                    overflow: hidden;
+                    min-height: 210px;
+                    padding: 18px;
+                    border: 1px solid #b2c9b52b;
+                    border-radius: 14px;
+                    background: linear-gradient(150deg, #1a2821f2, #0b1111f5 72%);
+                    box-shadow: 0 14px 36px #0005, inset 0 1px #ffffff0a;
+                    text-align: left;
+                    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+                }
+
+                .devs-member::after {
+                    position: absolute;
+                    right: -36px;
+                    bottom: -62px;
+                    width: 130px;
+                    height: 130px;
+                    border: 1px solid #a9cdb714;
+                    border-radius: 50%;
+                    box-shadow: 0 0 0 16px #a9cdb706, 0 0 0 32px #a9cdb704;
+                    content: "";
+                    pointer-events: none;
+                }
+
+                .devs-member:hover {
+                    transform: translateY(-4px);
+                    border-color: #b8d5bc70;
+                    background: linear-gradient(150deg, #22352af5, #0c1412f8 72%);
+                }
+
+                .devs-profile-top {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 8px;
+                    color: #a9cdb7;
+                    font-size: 9px;
+                    font-weight: 600;
+                    letter-spacing: 1.2px;
+                }
+
+                .devs-status {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    color: #90a49a;
+                    font-size: 8px;
+                    letter-spacing: 1px;
+                    white-space: nowrap;
+                }
+
+                .devs-status i {
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: #9ccd9b;
+                    box-shadow: 0 0 10px #9ccd9b9c;
+                }
+
+                .devs-member .devs-monogram {
+                    display: grid;
+                    place-items: center;
+                    width: 58px;
+                    height: 58px;
+                    margin: 24px 0 17px;
+                    border: 1px solid #bfd8c255;
+                    border-radius: 50%;
+                    background: radial-gradient(circle at 35% 25%, #557563, #17261f 72%);
+                    box-shadow: 0 0 0 5px #a9cdb70b, inset 0 1px #ffffff22;
+                    color: #edf3e9;
+                    font-size: 18px;
+                    font-weight: 500;
+                    letter-spacing: -0.04em;
+                }
+
+                .devs-member h2 {
+                    position: relative;
+                    z-index: 1;
+                    margin: 0;
+                    color: #edf2ed;
+                    font-size: 17px;
+                    font-weight: 500;
+                    letter-spacing: -0.025em;
+                    line-height: 1.3;
+                }
+
+                .devs-member > p {
+                    position: relative;
+                    z-index: 1;
+                    margin: 7px 0 0;
+                    color: #9eafa5;
+                    font-size: 12px;
+                    line-height: 1.5;
+                }
+
+                .devs-member-lead {
+                    min-height: 224px;
+                    border-color: #b5d5b67a;
+                    background: linear-gradient(145deg, #233b2df5, #0c1712 75%);
+                    box-shadow: 0 0 0 5px #a9cdb70b, 0 20px 55px #0007, inset 0 1px #ffffff19;
+                }
+
+                .devs-member-lead .devs-profile-top > span:first-child {
+                    color: #d3e2cc;
+                }
+
+                .devs-member-lead .devs-monogram {
+                    width: 68px;
+                    height: 68px;
+                    border-color: #d0e0b68a;
+                    background: radial-gradient(circle at 35% 25%, #82966a, #283c2b 72%);
+                    font-size: 21px;
+                }
+
+                .devs-branch > .devs-node {
+                    padding-right: 12px;
+                    padding-left: 12px;
+                }
+
+                .devs-branch > .devs-node::before,
+                .devs-branch > .devs-node::after,
+                .devs-branch::before {
+                    border-color: var(--line);
+                }
+
+                .devs-footer-card {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 28px;
+                    margin-top: 38px;
+                    padding: 26px 28px;
+                    border: 1px solid #a9cdb71c;
+                    border-radius: 16px;
+                    background: #101914b8;
+                }
+
+                .devs-footer-card h2 {
+                    margin: 0 0 7px;
+                    font-size: 20px;
+                    font-weight: 400;
+                }
+
+                .devs-footer-card p {
+                    margin: 0;
+                    color: #9eafb0;
+                    font-size: 13px;
+                    line-height: 1.6;
+                }
+
+                .devs-footer-links {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+
+                .devs-footer-links a {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 11px 14px;
+                    border: 1px solid #a9cdb733;
+                    border-radius: 24px;
+                    color: #e2ece4;
+                    font-size: 12px;
+                    transition: background 160ms ease, border-color 160ms ease;
+                }
+
+                .devs-footer-links a:hover {
+                    border-color: #a9cdb780;
+                    background: #a9cdb714;
+                }
+
+                .devs-footer-links span {
+                    color: #b6d2bd;
+                }
+
+                .devs-footer {
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 20px;
+                    padding: 22px 2px 6px;
+                    color: #75867e;
+                    font-size: 10px;
+                    letter-spacing: 1.3px;
+                }
+
+                .devs-page .ex-dialog {
+                    color: #e8eeeb;
+                }
+
+                @media (max-width: 960px) {
+                    .devs-content {
+                        width: min(720px, calc(100% - 48px));
+                        padding-top: 124px;
+                    }
+
+                    .devs-tree {
+                        padding: 22px;
+                    }
+
+                    .devs-tree > .devs-node-lead {
+                        width: 100%;
+                    }
+
+                    .devs-member,
+                    .devs-member-lead {
+                        min-height: 0;
+                    }
+
+                    .devs-member {
+                        display: grid;
+                        grid-template-columns: 58px minmax(0, 1fr);
+                        grid-template-rows: auto auto auto;
+                        align-items: center;
+                        column-gap: 16px;
+                        padding: 16px;
+                    }
+
+                    .devs-profile-top {
+                        grid-column: 1 / -1;
+                        width: 100%;
+                    }
+
+                    .devs-member .devs-monogram {
+                        grid-column: 1;
+                        grid-row: 2 / span 2;
+                        margin: 18px 0 0;
+                    }
+
+                    .devs-member h2 {
+                        grid-column: 2;
+                        align-self: end;
+                        margin-top: 18px;
+                    }
+
+                    .devs-member > p {
+                        grid-column: 2;
+                        align-self: start;
+                        margin-top: 4px;
+                    }
+
+                    .devs-member-lead .devs-monogram {
+                        width: 64px;
+                        height: 64px;
+                    }
+                }
+
+                @media (max-width: 600px) {
+                    .devs-content {
+                        width: calc(100% - 36px);
+                        padding-top: 108px;
+                    }
+
+                    .devs-hero {
+                        padding: 20px 0 34px;
+                    }
+
+                    .devs-intro p {
+                        font-size: 13px;
+                    }
+
+                    .devs-section {
+                        margin-top: 20px;
+                    }
+
+                    .devs-tree {
+                        margin-top: 18px;
+                        padding: 16px;
+                        border-radius: 16px;
+                    }
+
+                    .devs-branch {
+                        margin-left: 15px;
+                    }
+
+                    .devs-branch > .devs-node {
+                        padding-left: 18px;
+                    }
+
+                    .devs-branch > .devs-node::before,
+                    .devs-branch > .devs-node:first-child::before,
+                    .devs-branch > .devs-node:last-child::before {
+                        width: 18px;
+                    }
+
+                    .devs-member {
+                        column-gap: 13px;
+                        padding: 14px;
+                    }
+
+                    .devs-profile-top {
+                        font-size: 8px;
+                        letter-spacing: 0.9px;
+                    }
+
+                    .devs-status {
+                        font-size: 7px;
+                    }
+
+                    .devs-member h2 {
+                        font-size: 15px;
+                    }
+
+                    .devs-footer-card,
+                    .devs-footer {
+                        align-items: flex-start;
+                        flex-direction: column;
+                    }
+
+                    .devs-footer-card {
+                        padding: 21px;
+                    }
+
+                    .devs-footer-links {
+                        width: 100%;
+                    }
+
+                    .devs-footer-links a {
+                        justify-content: space-between;
+                        flex: 1 1 auto;
+                    }
+                }
+
+                @media (prefers-reduced-motion: reduce) {
+                    .devs-member,
+                    .devs-footer-links a {
+                        transition: none;
+                    }
+                }
+
+                @media (min-width: 961px) {
+                    .devs-content {
+                        padding-top: 112px;
+                    }
+
+                    .devs-hero {
+                        padding: 8px 0 24px;
+                    }
+
+                    .devs-intro h1 {
+                        margin: 12px 0;
+                        font-size: clamp(42px, 5vw, 62px);
+                    }
+
+                    .devs-section {
+                        margin-top: 14px;
+                    }
+
+                    .devs-section-heading {
+                        padding-bottom: 12px;
+                    }
+
+                    .devs-tree {
+                        --gap: 22px;
+                        margin-top: 16px;
+                        padding: 16px 16px 18px;
+                    }
+
+                    .devs-member {
+                        min-height: 160px;
+                        padding: 16px;
+                    }
+
+                    .devs-member .devs-monogram {
+                        width: 52px;
+                        height: 52px;
+                        margin: 14px 0 10px;
+                    }
+
+                    .devs-member-lead {
+                        min-height: 176px;
+                    }
+
+                    .devs-member-lead .devs-monogram {
+                        width: 60px;
+                        height: 60px;
+                    }
+                }
+
+                .devs-page {
+                    scrollbar-width: thin;
+                    scrollbar-color: transparent transparent;
+                    transition: scrollbar-color 180ms ease;
+                }
+
+                .devs-page::-webkit-scrollbar {
+                    width: 8px;
+                }
+
+                .devs-page::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+
+                .devs-page::-webkit-scrollbar-thumb {
+                    border: 2px solid transparent;
+                    border-radius: 8px;
+                    background: transparent;
+                    background-clip: padding-box;
+                }
+
+                .devs-page.is-scrolling {
+                    scrollbar-color: #9eb8a780 transparent;
+                }
+
+                .devs-page.is-scrolling::-webkit-scrollbar-thumb {
+                    background: #9eb8a780;
+                    background-clip: padding-box;
+                }
+
+                @media (min-width: 961px) and (max-height: 820px) {
+                    .devs-content {
+                        padding-top: 82px;
+                    }
+
+                    .devs-hero {
+                        padding: 0 0 8px;
+                    }
+
+                    .devs-intro h1 {
+                        margin: 8px 0;
+                        font-size: clamp(38px, 4vw, 52px);
+                    }
+
+                    .devs-intro p {
+                        font-size: 14px;
+                        line-height: 1.5;
+                    }
+
+                    .devs-section {
+                        margin-top: 8px;
+                    }
+
+                    .devs-section-heading {
+                        padding-bottom: 8px;
+                    }
+
+                    .devs-tree {
+                        --gap: 15px;
+                        margin-top: 10px;
+                        padding: 10px 14px 12px;
+                    }
+
+                    .devs-member {
+                        min-height: 144px;
+                        padding: 14px;
+                    }
+
+                    .devs-member .devs-monogram {
+                        width: 44px;
+                        height: 44px;
+                        margin: 10px 0 7px;
+                    }
+
+                    .devs-member-lead {
+                        min-height: 156px;
+                    }
+
+                    .devs-member-lead .devs-monogram {
+                        width: 54px;
+                        height: 54px;
+                    }
+                }
