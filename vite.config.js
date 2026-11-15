@@ -6,6 +6,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         earth: "index.html",
+        about: "about.html",
+        resources: "resources.html",
         devs: "devs.html",
         moon: "moon.html",
         solar: "solar.html",

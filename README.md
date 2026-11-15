@@ -4,7 +4,7 @@ Explore our home planet with an interactive globe, photographic imagery, and adj
 
 A Three.js experience by **[Ethan Rogers](https://x.com/ethanplusai)**, focused on Earth's continents, oceans, clouds, and night lights.
 
-**[Explore earth.ethanplus.ai](https://earth.ethanplus.ai)** · [Run locally](#run-locally) · [Data & credits](CREDITS.md) · [MIT license](LICENSE)
+**[Explore earth.ethanplus.ai](https://earth.ethanplus.ai)** · [Run locally](#run-locally) · [Resources & credits](resources.html) · [Data & credits](CREDITS.md) · [MIT license](LICENSE)
 
 ![Interactive Earth with illuminated oceans, clouds, and terrain](docs/preview.png)
 
@@ -14,7 +14,7 @@ Rotate the photographic globe and zoom toward mountains and coastlines. Earth im
 
 The star field uses measured star positions. Desktop and phone layouts include labeled controls, touch interaction, and support for reduced-motion preferences.
 
-This repository publishes the Earth experience only. The legacy `/moon.html` and `/solar.html` routes redirect to Earth. Their old source files and data assets remain in the repository but are not loaded by the published experience.
+The published site includes the Earth experience, team page, and Resources page. The legacy `/moon.html` and `/solar.html` routes redirect to Earth. Their old source files and data assets remain in the repository but are not loaded by the published experience.
 
 ## Run locally
 
@@ -65,6 +65,7 @@ The project uses JavaScript modules, Three.js, and Vite. The published entry poi
 | --- | --- |
 | `src/main.js` | Earth views and controls |
 | `src/scene.js` | Shared Earth rendering and lighting |
+| `src/resources.js` | Public resources, attribution, copyright, and license page |
 | `public/` | Earth imagery and retained legacy assets |
 
 Run the unit checks with `npm test`. For browser checks, install Chromium and start the development server:

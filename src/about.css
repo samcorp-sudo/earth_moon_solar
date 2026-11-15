@@ -1,0 +1,50 @@
+.about-page {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.about-content {
+  max-width: none;
+  padding: 142px 0 36px;
+}
+
+.about-hero {
+  padding: 24px 24px 38px;
+}
+
+.about-page .resources-section-heading {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.about-hero > p {
+  max-width: 690px;
+}
+
+.about-card .resources-list {
+  padding-left: 20px;
+}
+
+.about-card .resources-list strong {
+  color: var(--palette-text);
+}
+
+.about-notice {
+  margin-top: 14px;
+}
+
+@media (max-width: 760px) {
+  .about-content {
+    padding-top: 112px;
+    padding-bottom: 24px;
+  }
+
+  .about-hero {
+    padding: 16px 14px 26px;
+  }
+
+  .about-page .resources-section-heading {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}

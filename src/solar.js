@@ -21,6 +21,7 @@ import "./style.css";
 
 import "./solar.css";
 import "./analog.css";
+import "./palette.css";
 
 mountSolar();
 const $ = (s) => document.querySelector(s),

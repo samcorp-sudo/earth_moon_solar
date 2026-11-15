@@ -14,6 +14,33 @@
   height: 100%;
   touch-action: none;
 }
+.earth-astronaut {
+  position: absolute;
+  z-index: 1;
+  top: 31%;
+  left: clamp(410px, 40vw, 590px);
+  width: clamp(124px, 17vw, 225px);
+  height: auto;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 12px 24px #151b3d66);
+  animation: astronaut-drift 6s ease-in-out infinite;
+}
+.earth-astronaut.is-dragging {
+  cursor: grabbing;
+  animation-play-state: paused;
+}
+@keyframes astronaut-drift {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -18px;
+  }
+}
 .exploration .veil {
   position: absolute;
   inset: 0;
@@ -276,6 +303,11 @@
       transparent 52%
     );
   }
+  .earth-astronaut {
+    top: 20%;
+    left: 6%;
+    width: min(32vw, 128px);
+  }
   .ex-copy {
     top: auto;
     bottom: 245px;
@@ -411,6 +443,9 @@
   .exploration * {
     scroll-behavior: auto;
     transition: none !important;
+  }
+  .earth-astronaut {
+    animation: none;
   }
 }
 

@@ -24,6 +24,7 @@ import {
   surfaceCoordinates,
 } from "./analog-data.js";
 import "./analog.css";
+import "./palette.css";
 const chapters = [
   {
     kicker: "OUR CELESTIAL COMPANION",

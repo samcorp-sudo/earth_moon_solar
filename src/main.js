@@ -3,34 +3,14 @@ import * as THREE from "three";
 import { createScene } from "./scene.js";
 import { EARTH_ANALOG_SITES } from "./analog-data.js";
 import "./analog.css";
+import "./palette.css";
 
 // FIX 1: every chapter button (index 0-3) needs an entry, and chapters 1-3 need lat/lon.
 const views = [
     {
         kicker: "",
         title: "The integrated<br>Earth system.",
-        body: "Observe the interaction of atmospheric dynamics, oceanic systems, and human geography. A composite visual model for examining planetary-scale phenomena.",
-    },
-    {
-        kicker: "Pacific",
-        title: "The Pacific<br>basin.",
-        body: "The largest ocean basin, covering roughly a third of Earth's surface.",
-        lat: 0,
-        lon: -150,
-    },
-    {
-        kicker: "Himalayas",
-        title: "Where plates<br>collide.",
-        body: "The Indian and Eurasian plates meet here, raising the world's highest peaks, including Everest at 8,849 m.",
-        lat: 28,
-        lon: 86,
-    },
-    {
-        kicker: "Night lights",
-        title: "Cities after<br>dark.",
-        body: "A static composite of artificial lighting that shows where people live. It is not live data.",
-        lat: 30,
-        lon: 10,
+        body: "Explore Earth by rotating and zooming the globe, adjusting sunlight, and discovering real-world analog sites that help researchers prepare for missions to the Moon and Mars.",
     },
 ];
 
@@ -64,29 +44,152 @@ function similarityRate(site) {
 let selectedSiteName = null;
 let sitePopover;
 let sitePreviewOpen = false;
+let activeSiteSpeech = null;
 
-function createSiteImage(site, className) {
+function stopSiteSpeech() {
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    activeSiteSpeech = null;
+}
+
+function addSiteNarration(site) {
+    const controls = document.createElement("div");
+    controls.className = "earth-site-narration";
+    const button = document.createElement("button");
+    button.className = "earth-site-narration-toggle";
+    button.type = "button";
+    const status = document.createElement("span");
+    status.className = "earth-site-narration-status";
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
+
+    const canSpeak = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+    if (!canSpeak) {
+        status.textContent = "Voice reading is not available in this browser.";
+        controls.append(status);
+        detail.insertBefore(controls, detail.querySelector("h2").nextSibling);
+        return;
+    }
+
+    const spokenText = [...detail.querySelectorAll(".eyebrow, h2, h3, p, li, figcaption")]
+        .map((element) => element.textContent.trim())
+        .filter(Boolean)
+        .join(". ");
+    const utterance = new SpeechSynthesisUtterance(spokenText);
+    utterance.lang = document.documentElement.lang || "en";
+    activeSiteSpeech = utterance;
+    button.textContent = "Stop reading";
+    button.setAttribute("aria-label", `Stop reading details for ${site.shortName}`);
+    status.textContent = "Reading site details aloud.";
+
+    utterance.onend = () => {
+        if (activeSiteSpeech !== utterance) return;
+        activeSiteSpeech = null;
+        button.textContent = "Read details aloud";
+        button.setAttribute("aria-label", `Read details for ${site.shortName} aloud`);
+        status.textContent = "Finished reading details.";
+    };
+    utterance.onerror = (event) => {
+        if (activeSiteSpeech !== utterance || event.error === "canceled" || event.error === "interrupted") return;
+        activeSiteSpeech = null;
+        button.textContent = "Read details aloud";
+        button.setAttribute("aria-label", `Read details for ${site.shortName} aloud`);
+        status.textContent = "Voice reading could not be played.";
+    };
+    button.setAttribute("aria-label", `Stop reading details for ${site.shortName}`);
+    button.onclick = () => {
+        if (activeSiteSpeech === utterance) {
+            stopSiteSpeech();
+            button.textContent = "Read details aloud";
+            button.setAttribute("aria-label", `Read details for ${site.shortName} aloud`);
+            status.textContent = "Reading stopped.";
+            return;
+        }
+        stopSiteSpeech();
+        activeSiteSpeech = utterance;
+        button.textContent = "Stop reading";
+        button.setAttribute("aria-label", `Stop reading details for ${site.shortName}`);
+        status.textContent = "Reading site details aloud.";
+        window.speechSynthesis.speak(utterance);
+    };
+    controls.append(button, status);
+    detail.insertBefore(controls, detail.querySelector("h2").nextSibling);
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+}
+
+function createSiteImage(site, className, src = site.image, alt = `Reference image of ${site.shortName}`) {
     const image = document.createElement("img");
     image.className = className;
-    image.src = site.image;
-    image.alt = `Reference image of ${site.shortName}`;
+    image.src = src;
+    image.alt = alt;
     image.loading = "eager";
     image.addEventListener(
         "error",
         () => {
             const container = image.parentElement;
             if (container) {
-                container.textContent = `The reference image for ${site.shortName} could not be loaded.`;
+                container.textContent = `The reference image could not be loaded: ${alt}.`;
             }
-            console.error(new Error(`Unable to load site image: ${site.image}`));
+            console.error(new Error(`Unable to load reference image: ${src}`));
         },
         { once: true },
     );
     return image;
 }
 
+function createSiteComparison(site, variant) {
+    const comparison = document.createElement("div");
+    comparison.className = "earth-site-comparison";
+
+    const earthFigure = document.createElement("figure");
+    earthFigure.className = "earth-site-comparison-item";
+    const earthCaption = document.createElement("figcaption");
+    earthCaption.textContent = `Earth · ${site.shortName}`;
+    const earthFrame = document.createElement("div");
+    earthFrame.className = variant === "preview" ? "earth-site-preview-image" : "earth-site-terrain";
+    const earthImageClass = variant === "preview" ? "earth-site-preview-photo" : "earth-site-terrain-image";
+    earthFrame.append(createSiteImage(site, earthImageClass));
+    earthFigure.append(earthCaption, earthFrame);
+
+    const targetFigure = document.createElement("figure");
+    targetFigure.className = "earth-site-comparison-item";
+    const targetBody = site.targetBody;
+    const targetCaption = document.createElement("figcaption");
+    targetCaption.textContent = `${targetBody} · planetary surface reference`;
+    const targetFrame = document.createElement("div");
+    targetFrame.className = "earth-site-target-image-frame";
+    const targetImagePath = targetBody === "Moon"
+        ? "/textures/moon/color.jpg"
+        : "/textures/solar/mars.jpg";
+    const targetImageSite = { ...site, shortName: `${targetBody} surface` };
+    targetFrame.append(createSiteImage(
+        targetImageSite,
+        "earth-site-target-image",
+        targetImagePath,
+        `${targetBody} surface texture; target location marked on the map`,
+    ));
+
+    const targetCoordinates = site.target.match(/\(([-\d.]+)°?\s*([NS]),\s*([-\d.]+)°?\s*([EW])/);
+    if (targetCoordinates) {
+        const latitude = Number(targetCoordinates[1]) * (targetCoordinates[2] === "S" ? -1 : 1);
+        const longitude = Number(targetCoordinates[3]) * (targetCoordinates[4] === "W" ? -1 : 1);
+        const marker = document.createElement("span");
+        marker.className = "earth-site-target-pin";
+        marker.setAttribute("aria-hidden", "true");
+        marker.style.left = `${((longitude + 180) / 360) * 100}%`;
+        marker.style.top = `${((90 - latitude) / 180) * 100}%`;
+        targetFrame.append(marker);
+    }
+
+    targetFigure.append(targetCaption, targetFrame);
+    comparison.append(earthFigure, targetFigure);
+    return comparison;
+}
+
 function showSite(site) {
+    stopSiteSpeech();
     detail.replaceChildren();
+    detail.dataset.earthSite = site.name;
     detail.setAttribute("aria-live", "polite");
 
     const back = document.createElement("button");
@@ -94,7 +197,10 @@ function showSite(site) {
     back.setAttribute("aria-label", "Back to the globe");
     back.textContent = "‹";
     back.onclick = () => {
+        stopSiteSpeech();
         detail.hidden = true;
+        detail.replaceChildren();
+        delete detail.dataset.earthSite;
         selectedSiteName = null;
         sitePreviewOpen = false;
         sitePopover.hidden = true;
@@ -130,14 +236,11 @@ function showSite(site) {
     const detailSimilarity = similarityRate(site);
     if (detailSimilarity) detail.append(detailSimilarity);
 
-    const terrain = document.createElement("div");
-    terrain.className = "earth-site-terrain";
-    terrain.append(createSiteImage(site, "earth-site-terrain-image"));
-
+    const comparison = createSiteComparison(site, "detail");
     const terrainCaption = document.createElement("p");
     terrainCaption.className = "earth-site-terrain-caption";
-    terrainCaption.textContent = "Reference image from the supplied planetary analog collection.";
-    detail.append(terrain, terrainCaption);
+    terrainCaption.textContent = "The Earth photo shows the analog site; the planetary texture marks the target location and is not a close-up image.";
+    detail.append(comparison, terrainCaption);
 
     // FIX 5: show the richer fields (student, scientist, key facts, ...) when present.
     const sections = [
@@ -184,6 +287,13 @@ function showSite(site) {
 
 const siteMarkers = [];
 
+document.addEventListener("earth-search-result", (event) => {
+    const source = event.detail?.element;
+    const siteName = source?.closest("[data-earth-site]")?.dataset.earthSite;
+    if (!siteName) return;
+    siteMarkers.find(({ site }) => site.name === siteName)?.button.click();
+});
+
 scene.attachLayer(({ group, camera, geographic, radius = 2.55, globe }) => {
     const overlay = document.createElement("div");
     overlay.className = "earth-sites";
@@ -214,6 +324,7 @@ scene.attachLayer(({ group, camera, geographic, radius = 2.55, globe }) => {
         button.setAttribute("aria-label", `Open ${site.name} analog site details`);
         button.setAttribute("aria-pressed", "false");
         button.title = site.name;
+        button.dataset.earthSite = site.name;
 
         const icon = document.createElement("i");
         icon.setAttribute("aria-hidden", "true");
@@ -229,6 +340,7 @@ scene.attachLayer(({ group, camera, geographic, radius = 2.55, globe }) => {
             sitePopover.style.left = "";
             sitePopover.style.top = "";
             sitePopover.style.maxHeight = "";
+            sitePopover.dataset.earthSite = site.name;
             selectedSiteName = site.name;
             sitePreviewOpen = true;
             sitePopover.replaceChildren();
@@ -240,9 +352,7 @@ scene.attachLayer(({ group, camera, geographic, radius = 2.55, globe }) => {
             close.textContent = "✕";
             close.onclick = () => detail.querySelector(".earth-site-back").click();
 
-            const image = document.createElement("div");
-            image.className = "earth-site-preview-image";
-            image.append(createSiteImage(site, "earth-site-preview-photo"));
+            const comparison = createSiteComparison(site, "preview");
 
             const kicker = document.createElement("span");
             kicker.className = "eyebrow";
@@ -275,9 +385,10 @@ scene.attachLayer(({ group, camera, geographic, radius = 2.55, globe }) => {
                 scene.setFocusRotation(site.latitude, site.longitude, radius + 0.02);
                 scene.flyTo(site.latitude, site.longitude, 0.55, 2000);
                 detail.hidden = false;
+                addSiteNarration(site);
             };
 
-            sitePopover.append(close, image, kicker, heading, region);
+            sitePopover.append(close, comparison, kicker, heading, region);
             if (previewSimilarity) sitePopover.append(previewSimilarity);
             sitePopover.append(target, summary, more);
 

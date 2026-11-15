@@ -2,6 +2,7 @@ import { siteHeader } from "./site-header.js";
 import "./style.css";
 import "./exploration.css";
 import "./devs.css";
+import "./palette.css";
 
 const app = document.querySelector("#app");
 

@@ -176,6 +176,61 @@
   height: 100%;
   object-fit: cover;
 }
+.earth-site-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0 0;
+}
+.earth-site-comparison-item {
+  min-width: 0;
+  margin: 0;
+}
+.earth-site-comparison-item figcaption {
+  min-height: 28px;
+  margin-bottom: 5px;
+  color: #dce5e7;
+  font-size: 9px;
+  line-height: 1.4;
+}
+.earth-site-comparison .earth-site-preview-image,
+.earth-site-comparison .earth-site-terrain,
+.earth-site-target-image-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.5;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid #a8c0c544;
+  border-radius: 8px;
+  background: #07131b;
+}
+.earth-site-target-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+.earth-site-target-pin {
+  position: absolute;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #04010e;
+  border-radius: 50%;
+  background: #fadf95;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 4px rgba(250,223,149,.4), 0 0 14px rgba(4,1,14,.8);
+  pointer-events: none;
+}
+.earth-site-popover .earth-site-comparison {
+  gap: 8px;
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+.earth-site-popover .earth-site-comparison-item figcaption {
+  font-size: 8px;
+}
 .earth-site-popover .eyebrow {
   color: #e1d2ab;
   font-size: 9px;
@@ -306,6 +361,33 @@
   color: #99adb7 !important;
   font-size: 10px !important;
   line-height: 1.5 !important;
+}
+.earth-site-narration {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: 12px 0;
+}
+.earth-site-narration-toggle {
+  min-height: 40px;
+  padding: 8px 13px;
+  border: 1px solid rgba(163,130,77,.55);
+  border-radius: 22px;
+  background: rgba(163,130,77,.16);
+  color: #f7f2eb;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.earth-site-narration-toggle:hover,
+.earth-site-narration-toggle:focus-visible {
+  background: rgba(163,130,77,.28);
+  color: #fadf95;
+}
+.earth-site-narration-status {
+  color: #c9d0d8;
+  font-size: 11px;
 }
 .exploration .ex-detail h3 {
   font-size: 14px;
