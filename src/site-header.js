@@ -4,6 +4,7 @@ import { arrowUpRight } from "./ui-icons.js";
 const links = [
   ["planet", "/", "Earth"],
   ["about", "/about.html", "About"],
+  ["subscribe", "/about.html#subscribe", "Subscribe"],
   ["resources", "/resources.html", "Resources"],
   ["devs", "/devs.html", "Devs"],
 ];
@@ -17,6 +18,12 @@ function setupPageSearch() {
   let highlightTimer;
   let shownCount = 8;
   let lastQuery = "";
+  const compactSearch = matchMedia("(max-width: 360px)");
+  const updateSearchPlaceholder = () => {
+    input.placeholder = compactSearch.matches ? "Search" : "Search this page";
+  };
+  updateSearchPlaceholder();
+  compactSearch.addEventListener("change", updateSearchPlaceholder);
 
   function closeResults() {
     results.hidden = true;

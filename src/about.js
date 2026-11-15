@@ -8,6 +8,7 @@ import "./palette.css";
 import "./about.css";
 
 const app = document.querySelector("#app");
+const subscriptionEndpoint = import.meta.env.VITE_SUBSCRIPTION_ENDPOINT?.trim();
 
 app.innerHTML = `
   <main class="world-shell exploration resources-page about-page">
@@ -60,6 +61,23 @@ app.innerHTML = `
         </div>
       </section>
 
+      <section class="resources-section" id="subscribe" aria-labelledby="about-subscribe-title">
+        <div class="resources-section-heading">
+          <h2 id="about-subscribe-title">Get new data updates</h2>
+        </div>
+        <div class="resources-card about-card">
+          <p>Subscribe by email to hear when new planetary data is added. Your email will be used only for these update notices.</p>
+          <form class="subscription-form" id="data-subscription-form">
+            <label for="subscription-email">Email address</label>
+            <div class="subscription-form-controls">
+              <input id="subscription-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required${subscriptionEndpoint ? "" : " disabled"}>
+              <button type="submit"${subscriptionEndpoint ? "" : " disabled"}>Subscribe</button>
+            </div>
+            <p class="subscription-status" id="subscription-status" role="status" aria-live="polite">${subscriptionEndpoint ? "" : "Email subscriptions are not available yet. Please check back soon."}</p>
+          </form>
+        </div>
+      </section>
+
       <footer class="resources-footer"><span>Earth Explorer · Tala Voyager 3</span></footer>
     </div>
     <dialog class="ex-dialog">
@@ -75,3 +93,33 @@ document.querySelector("#nav-science").onclick = () =>
   document.querySelector(".ex-dialog").showModal();
 document.querySelector(".ex-dialog .ex-close").onclick = () =>
   document.querySelector(".ex-dialog").close();
+
+const subscriptionForm = document.querySelector("#data-subscription-form");
+if (subscriptionEndpoint) {
+  const subscriptionStatus = document.querySelector("#subscription-status");
+  subscriptionForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const submitButton = subscriptionForm.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    subscriptionStatus.textContent = "Submitting your subscription…";
+
+    try {
+      const response = await fetch(subscriptionEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: subscriptionForm.elements.email.value.trim(),
+          topic: "data-updates",
+        }),
+      });
+      if (!response.ok) throw new Error(`Subscription request failed (${response.status}).`);
+      subscriptionForm.reset();
+      subscriptionStatus.textContent = "Your subscription request was received. Check your email for any confirmation steps.";
+    } catch (error) {
+      console.error("Unable to submit email subscription.", error);
+      subscriptionStatus.textContent = "We couldn’t complete your subscription. Please try again later.";
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+}

@@ -10,7 +10,7 @@ const views = [
     {
         kicker: "",
         title: "The integrated<br>Earth system.",
-        body: "Explore Earth by rotating and zooming the globe, adjusting sunlight, and discovering real-world analog sites that help researchers prepare for missions to the Moon and Mars.",
+        body: "Explore Earth by rotating and zooming the globe, and discovering real-world analog sites that help researchers prepare for missions to the Moon and Mars.",
     },
 ];
 

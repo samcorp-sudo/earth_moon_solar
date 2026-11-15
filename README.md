@@ -29,7 +29,7 @@ npm run dev
 
 Open **http://localhost:5173**, or the address printed in your terminal if that port is occupied.
 
-No accounts, API keys, or environment variables are required. All imagery and orbital data are bundled, so the running application does not need third-party requests. Installation downloads dependencies from npm.
+The explorer itself needs no accounts, API keys, or environment variables. All imagery and orbital data are bundled. Email subscriptions on the About page are optional and remain disabled until `VITE_SUBSCRIPTION_ENDPOINT` is configured.
 
 ### Controls
 
@@ -50,6 +50,8 @@ The production website is written to `dist/`. Serve that folder at the root of a
 This repository includes a `render.yaml` Blueprint for a Render Static Site. In Render, create a new Blueprint instance and connect this repository; Render will run `npm ci && npm run build` and publish `dist/` through its CDN. No start command or server-side runtime is required.
 
 Choose **Static Site**, not **Web Service**, if setting it up manually: build command `npm ci && npm run build`, publish directory `dist`. A Web Service configured with `npm run dev` is not a production deployment: Vite binds to `127.0.0.1`, which Render's public port scanner cannot reach. That causes repeated “No open ports detected” scans and a deploy timeout even though the build succeeded. The build log's `npm audit` notice is unrelated to that timeout.
+
+To enable email subscriptions, set the build-time environment variable `VITE_SUBSCRIPTION_ENDPOINT` to an HTTPS endpoint that accepts `POST` requests with JSON `{ "email": "…", "topic": "data-updates" }` and returns a successful HTTP status after accepting the request. The endpoint must manage subscriber consent and send notices when new data is published; configure CORS to allow the site origin. This public URL is bundled into the site, so do not put API keys or other secrets in it. Without a configured endpoint, the signup controls remain disabled.
 
 ## What the visualization represents
 
