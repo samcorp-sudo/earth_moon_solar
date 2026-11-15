@@ -1,0 +1,373 @@
+:root {
+  --bg-void: #04010e;
+  --bg-midnight: #0d0822;
+  --navy: #122e6b;
+  --royal: #4658b1;
+  --gold: #a3824d;
+  --bronze: #684728;
+  --sand: #fadf95;
+  --palette-text: #f7f2eb;
+  --palette-muted: #c9d0d8;
+  --palette-border: rgba(163, 130, 77, 0.34);
+}
+
+body,
+.world-shell {
+  background-color: var(--bg-void);
+  color: var(--palette-text);
+}
+
+.world-shell {
+  background-image:
+    radial-gradient(ellipse at 18% 8%, rgba(70, 88, 177, 0.18), transparent 34%),
+    linear-gradient(155deg, var(--bg-midnight), var(--bg-void) 72%);
+}
+
+.exploration,
+.solar {
+  background: var(--bg-void);
+  color: var(--palette-text);
+  --accent: var(--sand);
+}
+
+.resources-page,
+.devs-page {
+  background:
+    radial-gradient(ellipse at 72% 12%, rgba(70, 88, 177, 0.2), transparent 40%),
+    linear-gradient(145deg, var(--bg-midnight), var(--bg-void) 72%);
+  color: var(--palette-text);
+}
+
+.site-header.global-header {
+  left: 0;
+  right: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: var(--palette-text);
+}
+
+.site-header.global-header .header-sources {
+  display: none !important;
+}
+
+.resources-content {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: var(--palette-text);
+}
+
+.devs-content {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: var(--palette-text);
+}
+
+.ex-copy,
+.solar-copy {
+  left: 0;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.ex-dock {
+  left: 0;
+  right: 0;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.ex-readout,
+.ex-detail,
+.ex-extra {
+  right: 20px;
+}
+
+.solar-copy h1,
+.ex-copy h1,
+.resources-hero h1,
+.devs-intro h1,
+.resources-section-heading h2,
+.devs-section-heading h2,
+.resources-notice h2,
+.devs-footer-card h2 {
+  color: var(--palette-text);
+}
+
+.resources-hero .eyebrow,
+.resources-section-heading .eyebrow,
+.devs-section-heading .eyebrow,
+.ex-copy .eyebrow,
+.solar-copy .eyebrow,
+.solar-live,
+.earth-site-popover .eyebrow {
+  color: var(--sand);
+}
+
+.resources-hero h1 em,
+.devs-intro h1 em,
+.resources-card a,
+.resources-notice a,
+.resources-links span,
+.devs-footer-links span,
+.ex-detail a,
+.earth-site-popover a,
+.earth-site-popover .earth-site-preview-target,
+.analog-card a,
+.earth-site-similarity,
+.solar-sources a,
+.solar-analogs a {
+  color: var(--sand);
+}
+
+.resources-hero > p,
+.resources-card p,
+.resources-list,
+.resources-image-list,
+.resources-notice p,
+.devs-intro p,
+.devs-member > p,
+.devs-footer-card p,
+.ex-copy p,
+.ex-detail p,
+.ex-dialog p,
+.ex-dialog li,
+.ex-note,
+.ex-readout span,
+.solar-description,
+.solar-facts span,
+.solar-live,
+.solar-sources p,
+.solar-analogs p,
+.analog-card p,
+.analog-caveat {
+  color: var(--palette-muted);
+}
+
+.resources-section-heading,
+.devs-section-heading,
+.resources-card,
+.resources-notice,
+.resources-links a,
+.devs-tree,
+.devs-member,
+.devs-footer-card,
+.devs-footer-links a,
+.ex-detail,
+.ex-dialog,
+.earth-site-marker,
+.earth-site-popover,
+.solar-options,
+.solar-sources,
+.solar-analogs {
+  border-color: var(--palette-border);
+}
+
+.resources-card,
+.resources-notice,
+.devs-tree,
+.devs-member,
+.devs-footer-card,
+.ex-detail,
+.ex-dialog,
+.earth-site-marker,
+.earth-site-popover,
+.solar-options,
+.solar-sources,
+.solar-analogs {
+  background: linear-gradient(145deg, rgba(18, 46, 107, 0.38), rgba(13, 8, 34, 0.96) 68%, rgba(4, 1, 14, 0.98));
+  color: var(--palette-text);
+}
+
+.resources-card,
+.resources-notice,
+.devs-footer-card {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.devs-tree {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.devs-member,
+.devs-member-lead {
+  border-color: var(--palette-border);
+}
+
+.devs-member:hover,
+.devs-member-lead {
+  background: linear-gradient(145deg, rgba(70, 88, 177, 0.3), rgba(13, 8, 34, 0.97) 72%);
+}
+
+.devs-member .devs-monogram,
+.devs-member-lead .devs-monogram {
+  border-color: rgba(250, 223, 149, 0.55);
+  background: radial-gradient(circle at 35% 25%, var(--gold), var(--navy) 72%);
+  color: var(--palette-text);
+}
+
+.ex-chapters button,
+.ex-play,
+.ex-extra button,
+.ex-close,
+.earth-site-marker,
+.earth-site-preview-more,
+.solar-views button,
+.solar-planets button,
+.solar-key button,
+.solar #solar-speed,
+.solar #solar-options,
+.solar-mobile-views button,
+.solar-analog-trigger,
+.resources-links a,
+.devs-footer-links a {
+  border-color: var(--palette-border);
+  background-color: rgba(163, 130, 77, 0.1);
+  color: var(--palette-text);
+}
+
+.ex-chapters button[aria-pressed="true"],
+.ex-play,
+.solar-views button[aria-pressed="true"],
+.solar-planets button[aria-pressed="true"],
+.solar-mobile-views button[aria-pressed="true"] {
+  border-color: var(--gold);
+  background: rgba(163, 130, 77, 0.24);
+  color: var(--sand);
+}
+
+.ex-dock,
+.solar-transport,
+.resources-section-heading,
+.devs-section-heading {
+  border-color: var(--palette-border);
+}
+
+.solar #solar-play {
+  border-color: var(--sand);
+  background: var(--gold);
+  color: var(--bg-void);
+}
+
+.solar #solar-range::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, var(--sand), var(--royal), var(--navy));
+}
+
+.solar #solar-range::-webkit-slider-thumb,
+.solar #solar-range::-moz-range-thumb {
+  background: var(--sand);
+}
+
+.solar .solar-live i,
+.devs-status i {
+  background: var(--sand);
+  box-shadow: 0 0 10px rgba(250, 223, 149, 0.6);
+}
+
+.ex-legend .ramp {
+  background: linear-gradient(90deg, var(--navy), var(--royal), var(--gold), var(--sand));
+}
+
+.resources-links a:hover,
+.devs-footer-links a:hover,
+.solar-views button:hover,
+.solar-planets button:hover,
+.ex-dock button:hover {
+  border-color: var(--gold);
+  background-color: rgba(163, 130, 77, 0.2);
+}
+
+.exploration .veil,
+.solar-vignette {
+  background:
+    linear-gradient(90deg, rgba(4, 1, 14, 0.76), transparent 57%),
+    linear-gradient(0deg, rgba(4, 1, 14, 0.88), transparent 30%);
+}
+
+.ex-dialog::backdrop,
+.solar-sources::backdrop,
+.solar-analogs::backdrop,
+#mobile-navigation::backdrop {
+  background: rgba(4, 1, 14, 0.78);
+}
+
+.solar select option {
+  background: var(--bg-midnight);
+  color: var(--palette-text);
+}
+
+.resources-footer,
+.devs-footer {
+  color: var(--palette-muted);
+}
+
+.solar-controls {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+@media (max-width: 760px) {
+  .site-header.global-header {
+    left: 0;
+    right: 0;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .resources-content,
+  .devs-content {
+    width: 100%;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .ex-copy,
+  .solar-copy {
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .ex-dock {
+    left: 0;
+    right: 0;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .ex-readout,
+  .ex-detail,
+  .ex-extra {
+    right: 14px;
+  }
+
+  body .mobile-observatory {
+    left: 0;
+    right: 0;
+  }
+
+  body .mobile-observatory .mobile-panel {
+    padding-left: 12px;
+    padding-right: 12px;
+    background: linear-gradient(180deg, rgba(18, 46, 107, 0.42), rgba(13, 8, 34, 0.98) 42%, var(--bg-void));
+    border-top-color: var(--palette-border);
+  }
+
+  .resources-card,
+  .resources-notice,
+  .devs-footer-card,
+  .devs-tree {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .solar-controls {
+    left: 0;
+    width: 100%;
+  }
+}

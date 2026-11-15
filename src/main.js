@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { createScene } from "./scene.js";
 import { EARTH_ANALOG_SITES } from "./analog-data.js";
 import "./analog.css";
+import "./palette.css";
 
 // FIX 1: every chapter button (index 0-3) needs an entry, and chapters 1-3 need lat/lon.
 const views = [
@@ -65,24 +66,73 @@ let selectedSiteName = null;
 let sitePopover;
 let sitePreviewOpen = false;
 
-function createSiteImage(site, className) {
+function createSiteImage(site, className, src = site.image, alt = `Reference image of ${site.shortName}`) {
     const image = document.createElement("img");
     image.className = className;
-    image.src = site.image;
-    image.alt = `Reference image of ${site.shortName}`;
+    image.src = src;
+    image.alt = alt;
     image.loading = "eager";
     image.addEventListener(
         "error",
         () => {
             const container = image.parentElement;
             if (container) {
-                container.textContent = `The reference image for ${site.shortName} could not be loaded.`;
+                container.textContent = `The reference image could not be loaded: ${alt}.`;
             }
-            console.error(new Error(`Unable to load site image: ${site.image}`));
+            console.error(new Error(`Unable to load reference image: ${src}`));
         },
         { once: true },
     );
     return image;
+}
+
+function createSiteComparison(site, variant) {
+    const comparison = document.createElement("div");
+    comparison.className = "earth-site-comparison";
+
+    const earthFigure = document.createElement("figure");
+    earthFigure.className = "earth-site-comparison-item";
+    const earthCaption = document.createElement("figcaption");
+    earthCaption.textContent = `Earth · ${site.shortName}`;
+    const earthFrame = document.createElement("div");
+    earthFrame.className = variant === "preview" ? "earth-site-preview-image" : "earth-site-terrain";
+    const earthImageClass = variant === "preview" ? "earth-site-preview-photo" : "earth-site-terrain-image";
+    earthFrame.append(createSiteImage(site, earthImageClass));
+    earthFigure.append(earthCaption, earthFrame);
+
+    const targetFigure = document.createElement("figure");
+    targetFigure.className = "earth-site-comparison-item";
+    const targetBody = site.targetBody;
+    const targetCaption = document.createElement("figcaption");
+    targetCaption.textContent = `${targetBody} · planetary surface reference`;
+    const targetFrame = document.createElement("div");
+    targetFrame.className = "earth-site-target-image-frame";
+    const targetImagePath = targetBody === "Moon"
+        ? "/textures/moon/color.jpg"
+        : "/textures/solar/mars.jpg";
+    const targetImageSite = { ...site, shortName: `${targetBody} surface` };
+    targetFrame.append(createSiteImage(
+        targetImageSite,
+        "earth-site-target-image",
+        targetImagePath,
+        `${targetBody} surface texture; target location marked on the map`,
+    ));
+
+    const targetCoordinates = site.target.match(/\(([-\d.]+)°?\s*([NS]),\s*([-\d.]+)°?\s*([EW])/);
+    if (targetCoordinates) {
+        const latitude = Number(targetCoordinates[1]) * (targetCoordinates[2] === "S" ? -1 : 1);
+        const longitude = Number(targetCoordinates[3]) * (targetCoordinates[4] === "W" ? -1 : 1);
+        const marker = document.createElement("span");
+        marker.className = "earth-site-target-pin";
+        marker.setAttribute("aria-hidden", "true");
+        marker.style.left = `${((longitude + 180) / 360) * 100}%`;
+        marker.style.top = `${((90 - latitude) / 180) * 100}%`;
+        targetFrame.append(marker);
+    }
+
+    targetFigure.append(targetCaption, targetFrame);
+    comparison.append(earthFigure, targetFigure);
+    return comparison;
 }
 
 function showSite(site) {
@@ -130,14 +180,11 @@ function showSite(site) {
     const detailSimilarity = similarityRate(site);
     if (detailSimilarity) detail.append(detailSimilarity);
 
-    const terrain = document.createElement("div");
-    terrain.className = "earth-site-terrain";
-    terrain.append(createSiteImage(site, "earth-site-terrain-image"));
-
+    const comparison = createSiteComparison(site, "detail");
     const terrainCaption = document.createElement("p");
     terrainCaption.className = "earth-site-terrain-caption";
-    terrainCaption.textContent = "Reference image from the supplied planetary analog collection.";
-    detail.append(terrain, terrainCaption);
+    terrainCaption.textContent = "The Earth photo shows the analog site; the planetary texture marks the target location and is not a close-up image.";
+    detail.append(comparison, terrainCaption);
 
     // FIX 5: show the richer fields (student, scientist, key facts, ...) when present.
     const sections = [
@@ -240,9 +287,7 @@ scene.attachLayer(({ group, camera, geographic, radius = 2.55, globe }) => {
             close.textContent = "✕";
             close.onclick = () => detail.querySelector(".earth-site-back").click();
 
-            const image = document.createElement("div");
-            image.className = "earth-site-preview-image";
-            image.append(createSiteImage(site, "earth-site-preview-photo"));
+            const comparison = createSiteComparison(site, "preview");
 
             const kicker = document.createElement("span");
             kicker.className = "eyebrow";
@@ -277,7 +322,7 @@ scene.attachLayer(({ group, camera, geographic, radius = 2.55, globe }) => {
                 detail.hidden = false;
             };
 
-            sitePopover.append(close, image, kicker, heading, region);
+            sitePopover.append(close, comparison, kicker, heading, region);
             if (previewSimilarity) sitePopover.append(previewSimilarity);
             sitePopover.append(target, summary, more);
 

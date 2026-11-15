@@ -10,6 +10,7 @@ async function assertPrimaryNavigation(page, selector) {
       links.map((link) => new URL(link.href).pathname),
     );
   assert.ok(targets.includes("/"), "navigation links to Earth");
+  assert.ok(targets.includes("/resources.html"), "navigation links to Resources");
   assert.ok(targets.includes("/devs.html"), "navigation links to Devs");
 }
 const browser = await chromium.launch({
