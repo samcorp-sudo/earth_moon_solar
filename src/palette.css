@@ -371,3 +371,89 @@ body,
     width: 100%;
   }
 }
+
+.world-shell.devs-page {
+  background:
+    radial-gradient(ellipse at 72% 12%, rgba(70, 88, 177, 0.2), transparent 40%),
+    linear-gradient(145deg, var(--bg-midnight), var(--bg-void) 72%);
+}
+
+.devs-page .devs-atmosphere span {
+  border-color: rgba(250, 223, 149, 0.08);
+  box-shadow: 0 0 0 42px rgba(250, 223, 149, 0.025), 0 0 0 84px rgba(250, 223, 149, 0.015);
+}
+
+.devs-page .devs-intro h1 em,
+.devs-page .devs-section-heading .eyebrow,
+.devs-page .devs-profile-top,
+.devs-page .devs-footer-links span {
+  color: var(--sand);
+}
+
+.devs-page .devs-section-heading {
+  border-bottom-color: var(--palette-border);
+}
+
+.devs-page .devs-tree {
+  --line: rgba(163, 130, 77, 0.48);
+  border-color: var(--palette-border);
+  background: linear-gradient(145deg, rgba(18, 46, 107, 0.38), rgba(13, 8, 34, 0.96) 68%, rgba(4, 1, 14, 0.98));
+}
+
+.devs-page .devs-member {
+  border-color: var(--palette-border);
+  background: linear-gradient(150deg, rgba(18, 46, 107, 0.42), rgba(13, 8, 34, 0.96) 72%);
+}
+
+.devs-page .devs-member:hover,
+.devs-page .devs-member-lead {
+  border-color: rgba(250, 223, 149, 0.56);
+  background: linear-gradient(145deg, rgba(70, 88, 177, 0.42), rgba(13, 8, 34, 0.97) 72%);
+}
+
+.devs-page .devs-status {
+  color: var(--palette-muted);
+}
+
+.devs-page .devs-status i {
+  background: var(--sand);
+  box-shadow: 0 0 10px rgba(250, 223, 149, 0.6);
+}
+
+.devs-page .devs-member .devs-monogram {
+  border-color: rgba(250, 223, 149, 0.45);
+  background: radial-gradient(circle at 35% 25%, var(--gold), var(--navy) 72%);
+  color: var(--palette-text);
+}
+
+.devs-page .devs-member h2 {
+  color: var(--palette-text);
+}
+
+.devs-page .devs-member > p,
+.devs-page .devs-footer-card p {
+  color: var(--palette-muted);
+}
+
+.devs-page .devs-footer-card {
+  border-color: var(--palette-border);
+  background: linear-gradient(145deg, rgba(18, 46, 107, 0.32), rgba(13, 8, 34, 0.92));
+}
+
+.devs-page .devs-footer-links a {
+  border-color: var(--palette-border);
+  color: var(--palette-text);
+}
+
+.devs-page .devs-footer-links a:hover {
+  border-color: rgba(250, 223, 149, 0.6);
+  background: rgba(163, 130, 77, 0.14);
+}
+
+.devs-page.is-scrolling {
+  scrollbar-color: rgba(163, 130, 77, 0.5) transparent;
+}
+
+.devs-page.is-scrolling::-webkit-scrollbar-thumb {
+  background: rgba(163, 130, 77, 0.5);
+}
