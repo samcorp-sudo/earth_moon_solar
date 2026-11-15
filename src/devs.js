@@ -51,7 +51,7 @@ app.innerHTML = `
           <li class="devs-node devs-node-lead">
       
             <ul class="devs-branch">
-              ${members.map((member) => `<li class="devs-node"></li>`).join("")}
+              ${members.map((member) => `<li class="devs-node">${memberCard(member)}</li>`).join("")}
             </ul>
           </li>
         </ul>
