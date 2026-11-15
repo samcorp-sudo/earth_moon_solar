@@ -1,4 +1,6 @@
 import { siteHeader } from "./site-header.js";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/public-sans";
 import "./style.css";
 import "./exploration.css";
 import "./devs.css";
@@ -10,7 +12,7 @@ const team = [
     { name: "Jacken James B. Bongao", role: " Team Leader & Developer", initials: "JB" },
     { name: "Angelito Nicolas Jr.", role: "Data Analyst & Researcher", initials: "AN" },
     { name: "Matt David Abing", role: "Tech Support & Researcher", initials: "MA" },
-    { name: "First Eman Roxas", role: "UI & UX Artist & Presenter", initials: "FR" },
+    { name: "First Emman Roxas", role: "UI & UX Artist & Presenter", initials: "FR" },
     { name: "Shedrick Ross Oclarit", role: "Creative Ideator & Project Manager", initials: "O" },
 ];
 
@@ -47,9 +49,9 @@ app.innerHTML = `
 
         <ul class="devs-tree" aria-label="JS Devs team">
           <li class="devs-node devs-node-lead">
-            ${memberCard(lead, "devs-member-lead")}
+      
             <ul class="devs-branch">
-              ${members.map((member) => `<li class="devs-node">${memberCard(member)}</li>`).join("")}
+              ${members.map((member) => `<li class="devs-node"></li>`).join("")}
             </ul>
           </li>
         </ul>

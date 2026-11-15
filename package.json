@@ -12,6 +12,8 @@
     "test:release": "node tests/release-check.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/public-sans": "^5.3.0",
     "three": "^0.180.0"
   },
   "devDependencies": {
