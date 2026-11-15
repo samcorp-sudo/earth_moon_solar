@@ -17,7 +17,7 @@ const views = [
 const ui = shell({
     id: "planet",
     ...views[0],
-    chapters: ["Whole Earth", "Pacific", "Himalayas", "Night lights"],
+    
     rangeLabel: "Sunlight",
     note: "NASA-derived imagery · Illustrative lighting · Drag to rotate · Scroll to zoom",
     legend: "<span>6,371 km mean radius</span>",
@@ -161,23 +161,35 @@ function createSiteComparison(site, variant) {
     const targetImagePath = targetBody === "Moon"
         ? "/textures/moon/color.jpg"
         : "/textures/solar/mars.jpg";
+    const targetCoordinates = site.target.match(/\(([-\d.]+)°?\s*([NS]),\s*([-\d.]+)°?\s*([EW])/);
     const targetImageSite = { ...site, shortName: `${targetBody} surface` };
-    targetFrame.append(createSiteImage(
+    const targetImage = createSiteImage(
         targetImageSite,
         "earth-site-target-image",
         targetImagePath,
-        `${targetBody} surface texture; target location marked on the map`,
-    ));
+        `${targetBody} planetary texture showing the target region`,
+    );
+    targetFrame.append(targetImage);
 
-    const targetCoordinates = site.target.match(/\(([-\d.]+)°?\s*([NS]),\s*([-\d.]+)°?\s*([EW])/);
     if (targetCoordinates) {
         const latitude = Number(targetCoordinates[1]) * (targetCoordinates[2] === "S" ? -1 : 1);
-        const longitude = Number(targetCoordinates[3]) * (targetCoordinates[4] === "W" ? -1 : 1);
+        const longitudeDegrees = Number(targetCoordinates[3]) * (targetCoordinates[4] === "W" ? -1 : 1);
+        const longitude = ((longitudeDegrees + 180) % 360 + 360) % 360 - 180;
+        const x = (longitude + 180) / 360;
+        const y = (90 - latitude) / 180;
+        const zoom = 2;
+        const imageOffsetX = Math.max(100 - zoom * 100, Math.min(0, 50 - x * zoom * 100));
+        const imageOffsetY = Math.max(100 - zoom * 100, Math.min(0, 50 - y * zoom * 100));
+        targetImage.style.width = `${zoom * 100}%`;
+        targetImage.style.height = `${zoom * 100}%`;
+        targetImage.style.left = `${imageOffsetX}%`;
+        targetImage.style.top = `${imageOffsetY}%`;
+
         const marker = document.createElement("span");
         marker.className = "earth-site-target-pin";
         marker.setAttribute("aria-hidden", "true");
-        marker.style.left = `${((longitude + 180) / 360) * 100}%`;
-        marker.style.top = `${((90 - latitude) / 180) * 100}%`;
+        marker.style.left = `${x * zoom * 100 + imageOffsetX}%`;
+        marker.style.top = `${y * zoom * 100 + imageOffsetY}%`;
         targetFrame.append(marker);
     }
 
@@ -239,7 +251,7 @@ function showSite(site) {
     const comparison = createSiteComparison(site, "detail");
     const terrainCaption = document.createElement("p");
     terrainCaption.className = "earth-site-terrain-caption";
-    terrainCaption.textContent = "The Earth photo shows the analog site; the planetary texture marks the target location and is not a close-up image.";
+    terrainCaption.textContent = "The Earth photo shows the analog site; the planetary texture is cropped around the target region and is illustrative, not a close-up photograph.";
     detail.append(comparison, terrainCaption);
 
     // FIX 5: show the richer fields (student, scientist, key facts, ...) when present.
