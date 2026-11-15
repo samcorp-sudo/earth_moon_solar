@@ -168,12 +168,13 @@
   border-radius: 9px;
   background: #07131b;
 }
-.earth-site-preview-image canvas {
+.earth-site-preview-photo {
   position: absolute;
   inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 .earth-site-popover .eyebrow {
   color: #e1d2ab;
@@ -271,12 +272,11 @@
   border-radius: 8px;
   background: #07131b;
 }
-.earth-site-terrain canvas {
-  position: absolute;
-  inset: 0;
+.earth-site-terrain-image {
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 .earth-site-terrain-pin,
 .earth-site-preview-pin {

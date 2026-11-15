@@ -1,6 +1,4 @@
 import { siteHeader } from "./site-header.js";
-import "@fontsource-variable/inter";
-import "@fontsource-variable/public-sans";
 import "./style.css";
 import "./exploration.css";
 import "./devs.css";
@@ -12,15 +10,15 @@ const team = [
     { name: "Jacken James B. Bongao", role: " Team Leader & Developer", initials: "JB" },
     { name: "Angelito Nicolas Jr.", role: "Data Analyst & Researcher", initials: "AN" },
     { name: "Matt David Abing", role: "Tech Support & Researcher", initials: "MA" },
-    { name: "First Emman Roxas", role: "UI & UX Artist & Presenter", initials: "FR" },
-    { name: "Shedrick Ross Oclarit", role: "Creative Ideator & Project Manager", initials: "O" },
+    { name: "First Eman Roxas", role: "UI & UX Artist & Presenter", initials: "FR" },
+    { name: "Shedrick Ross Oclarit", role: "Creative Ideator & Project Manager", initials: "SO" },
 ];
 
 const [lead, ...members] = team;
 
 const memberCard = ({ name, role, initials }, extraClass = "") => `
   <div class="devs-profile devs-member ${extraClass}">
-    <div class="devs-profile-top"><span>${(role || "Role coming soon").toUpperCase()}</span><span class="devs-status"><i></i> JS DEVS</span></div>
+    <div class="devs-profile-top"></div>
     <div class="devs-monogram" aria-hidden="true">${initials}</div>
     <h2>${name}</h2>
     <p>${role || "Team member"}</p>
@@ -36,7 +34,7 @@ app.innerHTML = `
         <div class="devs-intro">
 
           <h1 id="devs-title">Built with curiosity.<br /><em>Made to explore.</em></h1>
-          <p>Earth Explorer is an interactive project by the JS Devs team, bringing together planetary imagery and hands-on web graphics.</p>
+          <p>Earth Explorer is an interactive project by the Tala Voyager 3 Team, bringing together planetary imagery and hands-on web graphics.</p>
 
         </div>
       </section>
@@ -49,7 +47,7 @@ app.innerHTML = `
 
         <ul class="devs-tree" aria-label="JS Devs team">
           <li class="devs-node devs-node-lead">
-      
+            ${memberCard(lead, "devs-member-lead")}
             <ul class="devs-branch">
               ${members.map((member) => `<li class="devs-node">${memberCard(member)}</li>`).join("")}
             </ul>

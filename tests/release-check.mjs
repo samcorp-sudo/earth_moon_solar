@@ -116,7 +116,10 @@ try {
     const sitePreview = page.locator(".earth-site-popover");
     await sitePreview.waitFor({ state: "visible" });
     assert.ok((await sitePreview.innerText()).includes(selectedSite));
-    assert.ok(await sitePreview.locator(".earth-site-preview-pin").isVisible());
+    assert.ok(
+      await sitePreview.locator(".earth-site-preview-photo").isVisible(),
+      "site preview shows the supplied reference image",
+    );
     await page.waitForFunction(() => {
       const pin = document.querySelector(".earth-site-focus-pin");
       if (!pin || pin.hidden) return false;
@@ -138,12 +141,8 @@ try {
     });
     assert.equal(tagAndCardOverlap, false, "preview does not cover the selected landmark tag");
     await page.waitForFunction(() => {
-      const map = document.querySelector(".earth-site-preview-image canvas");
-      if (!map) return false;
-      const pixel = map
-        .getContext("2d")
-        .getImageData(map.width / 2, map.height / 2, 1, 1).data;
-      return pixel[0] !== 7 || pixel[1] !== 19 || pixel[2] !== 27;
+      const image = document.querySelector(".earth-site-preview-photo");
+      return image?.complete && image.naturalWidth > 0;
     });
     const previewBounds = await sitePreview.boundingBox();
     assert.ok(
@@ -160,20 +159,16 @@ try {
       .evaluate((button) => button.click());
     await page.locator(".ex-detail").waitFor({ state: "visible" });
     assert.ok(
-      await page.locator(".earth-site-terrain-pin").isVisible(),
-      "full site illustration shows its location pin",
+      await page.locator(".earth-site-terrain-image").isVisible(),
+      "full site details show the supplied reference image",
     );
     await page.waitForFunction(() => {
-      const map = document.querySelector(".earth-site-terrain canvas");
-      if (!map) return false;
-      const pixel = map
-        .getContext("2d")
-        .getImageData(map.width / 2, map.height / 2, 1, 1).data;
-      return pixel[0] !== 7 || pixel[1] !== 19 || pixel[2] !== 27;
+      const image = document.querySelector(".earth-site-terrain-image");
+      return image?.complete && image.naturalWidth > 0;
     });
     assert.ok(
       (await page.locator(".ex-detail").innerText()).includes(selectedSite),
-      "selected site details open with the 2D terrain view",
+      "selected site details open with the supplied reference image",
     );
     assert.ok(
       await page.locator(".ex-detail h3").filter({ hasText: "Target coordinates" }).isVisible(),

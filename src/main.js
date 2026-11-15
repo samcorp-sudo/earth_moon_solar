@@ -61,102 +61,28 @@ function similarityRate(site) {
     return row;
 }
 
-let selectedTerrainCanvas = null;
-let selectedTerrainSite = null;
-let selectedPreviewCanvas = null;
 let selectedSiteName = null;
 let sitePopover;
 let sitePreviewOpen = false;
 
-function showTerrainError() {
-    if (selectedTerrainCanvas) {
-        selectedTerrainCanvas.parentElement.textContent = "The illustrative terrain map is unavailable.";
-        selectedTerrainCanvas = null;
-    }
-    if (selectedPreviewCanvas) {
-        selectedPreviewCanvas.parentElement.textContent = "The illustrative terrain map is unavailable.";
-        selectedPreviewCanvas = null;
-    }
-}
-
-function drawTerrainMap(canvas, site) {
-    const context = canvas.getContext("2d");
-    if (!context) {
-        console.error(new Error("Could not create a 2D terrain illustration canvas"));
-        showTerrainError();
-        return;
-    }
-
-    const { width, height } = canvas;
-    const seed = [...site.name].reduce(
-        (value, character) => (value * 31 + character.charCodeAt(0)) >>> 0,
-        7,
-    );
-    const colors = site.region.includes("Antarctica")
-        ? ["#102936", "#527b7a", "#d2d0b1"]
-        : site.target.startsWith("Moon")
-            ? ["#342b25", "#a16d45", "#e4c995"]
-            : ["#1b3030", "#5c8a75", "#d2ce9d"];
-
-    const background = context.createLinearGradient(0, 0, width, height);
-    background.addColorStop(0, colors[0]);
-    background.addColorStop(0.58, colors[1]);
-    background.addColorStop(1, colors[0]);
-    context.fillStyle = background;
-    context.fillRect(0, 0, width, height);
-
-    context.strokeStyle = "#dce4d422";
-    context.lineWidth = 1;
-    for (let x = 30; x < width; x += 60) {
-        context.beginPath();
-        context.moveTo(x, 0);
-        context.lineTo(x, height);
-        context.stroke();
-    }
-    for (let y = 30; y < height; y += 60) {
-        context.beginPath();
-        context.moveTo(0, y);
-        context.lineTo(width, y);
-        context.stroke();
-    }
-
-    const centers = [
-        [width * (0.28 + (seed % 13) / 100), height * 0.43],
-        [width * 0.76, height * (0.56 + (seed % 9) / 100)],
-    ];
-    centers.forEach(([centerX, centerY], fieldIndex) => {
-        for (let ring = 0; ring < 10; ring += 1) {
-            const radiusX = 28 + ring * 17 + fieldIndex * 12;
-            const radiusY = 15 + ring * 9 + fieldIndex * 8;
-            context.beginPath();
-            for (let step = 0; step <= 96; step += 1) {
-                const angle = (step / 96) * Math.PI * 2;
-                const wobble =
-                    1 +
-                    0.055 * Math.sin(angle * 3 + seed + ring) +
-                    0.028 * Math.cos(angle * 5 + seed * 0.1);
-                const x = centerX + Math.cos(angle) * radiusX * wobble;
-                const y = centerY + Math.sin(angle) * radiusY * wobble;
-                if (step === 0) context.moveTo(x, y);
-                else context.lineTo(x, y);
+function createSiteImage(site, className) {
+    const image = document.createElement("img");
+    image.className = className;
+    image.src = site.image;
+    image.alt = `Reference image of ${site.shortName}`;
+    image.loading = "eager";
+    image.addEventListener(
+        "error",
+        () => {
+            const container = image.parentElement;
+            if (container) {
+                container.textContent = `The reference image for ${site.shortName} could not be loaded.`;
             }
-            context.closePath();
-            context.strokeStyle = `rgba(235, 226, 190, ${0.12 + ring * 0.012})`;
-            context.lineWidth = ring % 3 === 0 ? 1.5 : 1;
-            context.stroke();
-        }
-    });
-
-    const latitude = `${Math.abs(site.latitude).toFixed(2)}°${site.latitude < 0 ? "S" : "N"}`;
-    const longitude = `${Math.abs(site.longitude).toFixed(2)}°${site.longitude < 0 ? "W" : "E"}`;
-    context.fillStyle = "#f2ead3";
-    context.font = "12px Arial, sans-serif";
-    context.fillText(`${latitude}  /  ${longitude}`, 18, height - 18);
-    context.fillStyle = colors[2];
-    context.font = "10px Arial, sans-serif";
-    context.textAlign = "right";
-    context.fillText("ILLUSTRATIVE TERRAIN", width - 18, height - 18);
-    context.textAlign = "left";
+            console.error(new Error(`Unable to load site image: ${site.image}`));
+        },
+        { once: true },
+    );
+    return image;
 }
 
 function showSite(site) {
@@ -169,9 +95,6 @@ function showSite(site) {
     back.textContent = "‹";
     back.onclick = () => {
         detail.hidden = true;
-        selectedTerrainCanvas = null;
-        selectedPreviewCanvas = null;
-        selectedTerrainSite = null;
         selectedSiteName = null;
         sitePreviewOpen = false;
         sitePopover.hidden = true;
@@ -209,31 +132,12 @@ function showSite(site) {
 
     const terrain = document.createElement("div");
     terrain.className = "earth-site-terrain";
-    terrain.setAttribute("role", "img");
-    terrain.setAttribute(
-        "aria-label",
-        `Original illustrative terrain map around ${site.name}, with a pin at the approximate site coordinates`,
-    );
-
-    const terrainCanvas = document.createElement("canvas");
-    terrainCanvas.width = 800;
-    terrainCanvas.height = 350;
-    terrain.append(terrainCanvas);
-
-    const terrainPin = document.createElement("span");
-    terrainPin.className = "earth-site-terrain-pin";
-    terrainPin.setAttribute("aria-hidden", "true");
-    terrain.append(terrainPin);
+    terrain.append(createSiteImage(site, "earth-site-terrain-image"));
 
     const terrainCaption = document.createElement("p");
     terrainCaption.className = "earth-site-terrain-caption";
-    terrainCaption.textContent = "Original topographic-style illustration · Pin marks the approximate site coordinates.";
+    terrainCaption.textContent = "Reference image from the supplied planetary analog collection.";
     detail.append(terrain, terrainCaption);
-
-    selectedTerrainCanvas = terrainCanvas;
-    selectedTerrainSite = site;
-    // FIX 2: the full-details map was never drawn.
-    drawTerrainMap(terrainCanvas, site);
 
     // FIX 5: show the richer fields (student, scientist, key facts, ...) when present.
     const sections = [
@@ -327,7 +231,6 @@ scene.attachLayer(({ group, camera, geographic, radius = 2.55, globe }) => {
             sitePopover.style.maxHeight = "";
             selectedSiteName = site.name;
             sitePreviewOpen = true;
-            selectedPreviewCanvas = null;
             sitePopover.replaceChildren();
 
             const close = document.createElement("button");
@@ -339,22 +242,7 @@ scene.attachLayer(({ group, camera, geographic, radius = 2.55, globe }) => {
 
             const image = document.createElement("div");
             image.className = "earth-site-preview-image";
-            image.setAttribute("role", "img");
-            image.setAttribute(
-                "aria-label",
-                `Original illustrative terrain map around ${site.name}, with a pin at the approximate site coordinates`,
-            );
-
-            const previewCanvas = document.createElement("canvas");
-            previewCanvas.width = 720;
-            previewCanvas.height = 315;
-            image.append(previewCanvas);
-            const previewPin = document.createElement("span");
-            previewPin.className = "earth-site-preview-pin";
-            previewPin.setAttribute("aria-hidden", "true");
-            image.append(previewPin);
-            selectedPreviewCanvas = previewCanvas;
-            drawTerrainMap(previewCanvas, site);
+            image.append(createSiteImage(site, "earth-site-preview-photo"));
 
             const kicker = document.createElement("span");
             kicker.className = "eyebrow";
@@ -417,7 +305,7 @@ scene.attachLayer(({ group, camera, geographic, radius = 2.55, globe }) => {
     overlay.append(sitePopover);
     let popoverDrag = null;
     sitePopover.addEventListener("pointerdown", (event) => {
-        if (event.target.closest("button, a, input, canvas")) return;
+        if (event.target.closest("button, a, input, canvas, img")) return;
         const overlayRect = overlay.getBoundingClientRect();
         const cardRect = sitePopover.getBoundingClientRect();
         popoverDrag = {
